@@ -5,6 +5,7 @@ import Hotels from '../Hotels/Hotels'
 import Menu from '../Menu/Menu'
 import './App.css'
 import LoadingIcon from '../UI/LoadingIcon/LoadingIcon'
+import Searchbar from '../UI/Searchbar/Searchbar'
 
 const initHotels = [
   {
@@ -48,7 +49,9 @@ function App() {
 
   return (
     <>
-      <Header onSearch={onSearch} />
+      <Header>
+        <Searchbar onSearch={onSearch} />   
+      </Header>
       <Menu />
       {loading
         ? <LoadingIcon />
