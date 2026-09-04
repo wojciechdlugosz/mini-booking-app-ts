@@ -6,6 +6,7 @@ import Menu from '../Menu/Menu'
 import './App.css'
 import LoadingIcon from '../UI/LoadingIcon/LoadingIcon'
 import Searchbar from '../UI/Searchbar/Searchbar'
+import Layout from '../Layout/Layout'
 
 const initHotels = [
   {
@@ -49,13 +50,20 @@ function App() {
 
   return (
     <>
-      <Header>
-        <Searchbar onSearch={onSearch} />   
-      </Header>
-      <Menu />
-      {loading
-        ? <LoadingIcon />
-        : <Hotels hotels={hotels} />}
+      <Layout 
+        header={
+          <Header>
+            <Searchbar onSearch={onSearch} />   
+          </Header>
+        }
+        menu={<Menu />}
+        content={
+          loading
+          ? <LoadingIcon />
+          : <Hotels hotels={hotels} />
+        }
+        footer={<p>Stopka</p>}
+      />
     </>
   )
 }
