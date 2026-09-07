@@ -1,9 +1,13 @@
 // @ts-nocheck
 
-export default function ThemeButton(props) {
+import { use } from "react"
+import ThemeContext from "../../../context/ThemeContext"
+
+export default function ThemeButton() {
+  const themeContext = use(ThemeContext)
   return (
     <button
-      onClick={props.onChange}
+      onClick={themeContext.changeColor}
       style={{ border: 'none', background: '#fff', borderRadius: 8 }}
     >
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-brightness-high-fill" viewBox="0 0 16 16">

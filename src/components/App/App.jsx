@@ -9,6 +9,8 @@ import Searchbar from '../UI/Searchbar/Searchbar'
 import Layout from '../Layout/Layout'
 import Footer from '../Footer/Footer'
 import ThemeButton from '../UI/ThemeButton/ThemeButton'
+import ThemeContext from '../../context/ThemeContext'
+import AuthContext from '../../context/AuthContext'
 
 const initHotels = [
   {
@@ -33,6 +35,7 @@ function App() {
   const [hotels, setHotels] = useState([])
   const [loading, setLoading] = useState(true)
   const [themeColor, setThemeColor] = useState('primary') // danger, warning
+  const [user, setUser] = useState(null)
 
   useEffect(() => {
     // symulacja pobrania danych z BE
@@ -55,25 +58,38 @@ function App() {
     setThemeColor(themeColor === 'danger' ? 'primary' : 'danger')
   }
 
+  const header = (
+    <Header>
+      <div className='d-flex' style={{ gap: 10 }}>
+        <Searchbar onSearch={onSearch} />
+        <ThemeButton />
+      </div>
+    </Header>
+  )
+
+  const content = loading
+      ? <LoadingIcon />
+      : <Hotels hotels={hotels} />
+
   return (
     <>
-      <Layout 
-        header={
-          <Header>
-            <div className='d-flex' style={{ gap: 10 }}>
-              <Searchbar onSearch={onSearch} themeColor={themeColor}  />
-              <ThemeButton onChange={changeColor} />
-            </div>
-          </Header>
-        }
-        menu={<Menu />}
-        content={
-          loading
-          ? <LoadingIcon />
-          : <Hotels hotels={hotels} themeColor={themeColor} />
-        }
-        footer={<Footer themeColor={themeColor} />}
-      />
+      <ThemeContext.Provider value={{
+        color: themeColor,
+        changeColor,    
+      }}>
+        <AuthContext.Provider value={{
+          isAuthenticated: !!user,
+          logIn: () => setUser(true),
+          logOut: () => setUser(null),
+        }}>
+          <Layout 
+            header={header}
+            menu={<Menu />}
+            content={content}
+            footer={<Footer />}
+          />
+        </AuthContext.Provider>
+      </ThemeContext.Provider>
     </>
   )
 }
